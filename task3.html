@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sweet Shop</title>
+  <style>
+    /* Base Styling */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      background-color: #fffaf0;
+    }
+
+    header {
+      background-color: hsl(124, 89%, 62%);
+      padding: 20px;
+      color: #fff;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    /* Carousel Styling */
+    .carousel {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      margin: 20px auto;
+      overflow: hidden;
+      border-radius: 10px;
+    }
+
+    .carousel-images {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+
+    .carousel img {
+      width: 80%;
+    }
+
+    .carousel button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(50%);
+      background-color: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 10px;
+    }
+
+    .prev {
+      left: 0;
+    }
+
+    .next {
+      right: 0;
+    }
+
+    /* Quiz Styling */
+    .quiz-section {
+      margin: 20px;
+      padding: 20px;
+      border: 1px solid #ddd;
+      background-color: #dbd44c;
+      max-width: 500px;
+      margin: 20px auto;
+    }
+
+    /* Joke Section */
+    #joke {
+      font-size: 1.2em;
+      margin-top: 20px;
+      color: #333;
+    }
+
+    /* Responsive Styling */
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 1.8em;
+      }
+      .carousel img {
+        height: auto;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 1.5em;
+      }
+      #joke {
+        font-size: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Welcome to the Sweet Shop!</h1>
+  </header>
+
+  <!-- Image Carousel -->
+  <div class="carousel">
+    <div class="carousel-images" id="carousel-images">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfuQ_cH4-k8nVCzmYSUgc6aZeVhqu71QOJdw&s" alt="Sweet Image 1">
+      <img src="https://srmsweets.com/online/wp-content/uploads/2022/07/38985-600x396.jpg">
+      <img src="https://cdn.bloomsflora.com/uploads/product/flowers_n_fruits/1659942440_sa5.jpg">
+    </div>
+
+
+    <button class="prev" onclick="prevSlide()" aria-label="Previous Slide">&#10094;</button>
+    <button class="next" onclick="nextSlide()" aria-label="Next Slide">&#10095;</button>
+  
+ </div>
+
+
+  <!-- Interactive Quiz -->
+  <div class="quiz-section" id="quiz-section">
+    <h2>Sweet Quiz</h2>
+    <p id="quiz-question">What is the main ingredient in candy?</p>
+    <button onclick="answerQuiz('sugar')">Sugar</button>
+    <button onclick="answerQuiz('salt')">Salt</button>
+    <button onclick="answerQuiz('flour')">Flour</button>
+    <p id="quiz-result"></p>
+  </div>
+
+  <!-- Joke of the Day Section -->
+  <div id="joke">
+    Click the button below for a sweet joke of the day!
+  </div>
+  <button onclick="fetchJoke()">Get a Sweet Joke</button>
+
+  <script>
+    // JavaScript for Carousel
+    let currentIndex = 0;
+
+    function showSlide(index) {
+      const slides = document.getElementById('carousel-images');
+      const totalSlides = slides.children.length;
+      currentIndex = (index + totalSlides) % totalSlides;
+      slides.style.transform = `translateX(-${currentIndex * 100}%)`;
+    }
+
+    function nextSlide() {
+      showSlide(currentIndex + 1);
+    }
+
+    function prevSlide() {
+      showSlide(currentIndex - 1);
+    }
+
+    // JavaScript for Interactive Quiz
+    function answerQuiz(answer) {
+      const result = document.getElementById('quiz-result');
+      if (answer === 'sugar') {
+        result.innerText = 'Correct! Sugar is the main ingredient in candy.';
+      } else {
+        result.innerText = 'Oops! Try again.';
+      }
+    }
+
+    // JavaScript to Fetch a Joke from an API
+    async function fetchJoke() {
+      try {
+        const response = await fetch('https://icanhazdadjoke.com/', {
+          headers: { 'Accept': 'application/json' }
+        });
+        const data = await response.json();
+        document.getElementById('joke').innerText = data.joke;
+      } catch (error) {
+        document.getElementById('joke').innerText = 'Sorry, we couldn\'t load a joke!';
+      }
+    }
+  </script>
+</body>
+</html>
